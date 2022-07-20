@@ -22,4 +22,6 @@ export room_uid
 cat ./sampleshare > share_access.rb
 sed -i "s/roomid/$room_id/g" share_access.rb
 sed -i "s/userid/$user_id/g" share_access.rb
+sed -i "s/roomuid/$room_uid/g" share_access.rb
+sed -i "s/roomname/$room_name/g" share_access.rb
 bin/rails runner ./share_access.rb
