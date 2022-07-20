@@ -1,0 +1,25 @@
+#!/bin/bash
+
+read -p "username:" myuser
+export myuser
+read -p "email:" myemail
+export myemail
+read -p "pass:" mypass
+export mypass
+read -p "enter roomname:" room_name
+export room_name
+bundle exec rake user:create["$myuser","$myemail","$mypass","Teachers"]
+cat ./sampleuserid > userid.rb
+sed -i "s/myemail/$myemail/g" userid.rb
+bin/rails runner ./userid.rb                                                                             
+user_id=$(cat ./user_id.out)
+export user_id
+source ./create-room.sh
+room_id=$(cat ./room_id.out)
+export room_id
+room_uid=$(cat ./room_uid.out)
+export room_uid
+cat ./sampleshare > share_access.rb
+sed -i "s/roomid/$room_id/g" share_access.rb
+sed -i "s/userid/$user_id/g" share_access.rb
+bin/rails runner ./share_access.rb
