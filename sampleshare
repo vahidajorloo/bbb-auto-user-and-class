@@ -1,1 +1,2 @@
 SharedAccess.create(room_id: roomid, user_id: userid)
+Room.find_by(uid: "roomuid").update_attribute(:uid, "roomname")
