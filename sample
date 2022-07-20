@@ -1,0 +1,1 @@
+Room.create(user_id: 1, name: "roomname", room_settings: "{\"muteOnStart\":false,\"requireModeratorApproval\":false,\"anyoneCanStart\":false,\"joinModerator\":false}");f = File.new('room_id.out', 'w'); f << Room.find_by(name: "roomname").id;f.close;f = File.new('room_uid.out', 'w');f << Room.find_by(name: "roomname").uid;f.close
