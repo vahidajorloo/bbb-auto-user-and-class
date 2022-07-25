@@ -25,3 +25,9 @@ sed -i "s/userid/$user_id/g" share_access.rb
 sed -i "s/roomuid/$room_uid/g" share_access.rb
 sed -i "s/roomname/$room_name/g" share_access.rb
 bin/rails runner ./share_access.rb
+echo "New Account Detail:"                      
+echo "Login: http://bbblive.tehranclass.ir/b/signin"
+echo "Room URL: http://bbblive.tehranclass.ir/b/$room_name"
+echo "Username: $myuser"                                   
+echo "Email: $myemail"                                     
+echo "Password $mypass:"    
