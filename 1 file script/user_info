@@ -1,0 +1,47 @@
+#!/bin/bash
+
+read -p "username:" myuser
+export myuser
+read -p "email:" myemail
+export myemail
+read -p "pass:" mypass
+export mypass
+read -p "enter roomname:" room_name
+export room_name
+bundle exec rake user:create["$myuser","$myemail","$mypass","Teachers"]
+cat << EOF > userid.rb
+f = File.new('user_id.out', 'w');f << User.find_by(email: "myemail").id;f.close
+EOF
+sed -i "s/myemail/$myemail/g" userid.rb
+chmod +x ./userid.rb
+./bin/rails runner ./userid.rb
+user_id=$(cat ./user_id.out)
+export user_id
+cat << EOF > room-c.rb
+Room.create(user_id: 1, name: "roomname", room_settings: "{\"muteOnStart\":false,\"requireModeratorApproval\":false,\"anyoneCanStart\":false,\"joinModerator\":false}");f = File.new('room_id.out', 'w'); f << Room.find_by(name: "roomname").id;f.close;f = File.new('room_uid.out', 'w');f << Room.find_by(name: "roomname").uid;f.close
+EOF
+sed -i "s/roomname/$room_name/g" room-c.rb
+chmod +x ./room-c.rb
+./bin/rails runner ./room-c.rb
+room_id=$(cat ./room_id.out)
+export room_id
+room_uid=$(cat ./room_uid.out)
+export room_uid
+cat << EOF > share_access.rb
+SharedAccess.create(room_id: roomid, user_id: userid)
+Room.find_by(uid: "roomuid").update_attribute(:uid, "roomname")
+EOF
+sed -i "s/roomid/$room_id/g" share_access.rb
+sed -i "s/userid/$user_id/g" share_access.rb
+sed -i "s/roomuid/$room_uid/g" share_access.rb
+sed -i "s/roomname/$room_name/g" share_access.rb
+chmod +x ./share_access.rb
+./bin/rails runner ./share_access.rb
+echo "New Account Detail:"                      
+echo "Login: https://bbblive5.tehranclass.ir/b/signin"
+echo "Room URL: https://bbblive5.tehranclass.ir/b/$room_name"
+echo "Username: $myuser"                                   
+echo "Email: $myemail"                                     
+echo "Password: $mypass"
+
+
