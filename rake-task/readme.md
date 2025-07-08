@@ -1,4 +1,4 @@
-put this script in lib/tasks/ directory
+put this script in lib/tasks/ directory of the greenlight docker container
 
 to run it execute this:
 
